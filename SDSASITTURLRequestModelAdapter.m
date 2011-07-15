@@ -1,0 +1,203 @@
+//
+//  SDSASITTURLRequestModelAdapter.m
+//  dixiphone
+//
+//  Created by sergio on 3/30/11.
+//  Copyright 2011 Freescapes Labs - Sergio De Simone. All rights reserved.
+//
+
+#import "Three20Network/TTURLRequestModel.h"
+
+// Network
+#import "Three20Network/TTURLRequest.h"
+#import "Three20Network/TTURLRequestQueue.h"
+#import "Three20Network/TTURLCache.h"
+
+// Core
+#import "Three20Core/TTCorePreprocessorMacros.h"
+
+#import "SDSASITTURLRequestModelAdapter.h"
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+@implementation SDSASITTURLRequestModelAdapter
+
+@synthesize loadedTime  = _loadedTime;
+@synthesize cacheKey    = _cacheKey;
+@synthesize hasNoMore   = _hasNoMore;
+@synthesize req = _req;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)dealloc {
+	[[TTURLRequestQueue mainQueue] cancelRequestsWithDelegate:self];
+	[_req cancel];
+	
+	TT_RELEASE_SAFELY(_req);
+	TT_RELEASE_SAFELY(_loadedTime);
+	TT_RELEASE_SAFELY(_cacheKey);
+	
+	[super dealloc];
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)reset {
+	TT_RELEASE_SAFELY(_cacheKey);
+	TT_RELEASE_SAFELY(_loadedTime);
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark TTModel
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (BOOL)isLoaded {
+	return _req.complete;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (BOOL)isLoading {
+	return _req.inProgress;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (BOOL)isLoadingMore {
+	return _isLoadingMore;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (BOOL)isOutdated {
+	return nil != _loadedTime;
+
+	if (nil == _cacheKey) {
+		return nil != _loadedTime;
+		
+	} else {
+		NSDate* loadedTime = self.loadedTime;
+		
+		//-- SDS: seemingly a bug
+		//-- isOutdated returns YES based on the cache invalidationAge value;
+		//-- but, a request will load from the cache if the request validationAge is nil,
+		//-- irrespective of the TTURLCache invalidationAge.
+		//-- this may cause loops, whereby the model tries and reload a request on account of invalidateView
+		//-- calling isOutdated on the model thru updateView/reloadIfNeeded/shouldReload,
+		//-- the request is then loaded, but from the cache (!!) because it does not expire, the view is invalidated
+		//-- once again to refresh, and this triggers repetition...
+		if (nil != loadedTime) {
+			return -[loadedTime timeIntervalSinceNow] > [TTURLCache sharedCache].invalidationAge;
+			
+		} else {
+			return NO;
+		}
+	}
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)cancel {
+	[_req cancel];
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)invalidate:(BOOL)erase {
+//	return;
+	if (nil != _cacheKey) {
+		if (erase) {
+			[[TTURLCache sharedCache] removeKey:_cacheKey];
+			
+		} else {
+			[[TTURLCache sharedCache] invalidateKey:_cacheKey];
+		}
+		
+		TT_RELEASE_SAFELY(_cacheKey);
+	}
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark ASIHTTPRequestDelegate
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)requestStarted:(ASIHTTPRequest*)request {
+	[self didStartLoad];
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)request:(ASIHTTPRequest*)request didReceiveResponseHeaders:(NSDictionary*)responseHeaders  {
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)request:(ASIHTTPRequest*)request willRedirectToURL:(NSURL*)newURL {
+	[request redirectToURL:newURL];
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)requestFinished:(ASIHTTPRequest*)request {
+	[self didFinishLoad];
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)requestFailed:(ASIHTTPRequest*)request {
+	
+	[self didFailLoadWithError:request.error];
+}
+/*
+- (void)requestRedirected:(ASIHTTPRequest*)request {
+	[request redirectURL:[request redirectURL]];
+}
+*/
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark TTURLRequestDelegate
+
+/*
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)requestDidStartLoad:(TTURLRequest*)request {
+	[_loadingRequest release];
+	_loadingRequest = [request retain];
+	[self didStartLoad];
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)requestDidFinishLoad:(TTURLRequest*)request {
+	if (!self.isLoadingMore) {
+		[_loadedTime release];
+		_loadedTime = [request.timestamp retain];
+		self.cacheKey = request.cacheKey;
+	}
+	
+	TT_RELEASE_SAFELY(_loadingRequest);
+	[self didFinishLoad];
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)request:(TTURLRequest*)request didFailLoadWithError:(NSError*)error {
+	TT_RELEASE_SAFELY(_loadingRequest);
+	[self didFailLoadWithError:error];
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)requestDidCancelLoad:(TTURLRequest*)request {
+	TT_RELEASE_SAFELY(_loadingRequest);
+	[self didCancelLoad];
+}
+
+*/
+
+@end
