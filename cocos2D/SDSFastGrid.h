@@ -24,7 +24,13 @@
  */
 
 //
-// A class that transforms a texture into a grid
+// This class, based on original work by Ricardo Quesada, gives a node
+// that can be initialized with a texture (a sort of light sprite)
+// its main aim is making "light grid effects" possible.
+// You can use it in place of a CCSprite when you need to apply
+// animations effects based on CCGrid3D or CCTiledGrid3D.
+//
+// Sergio De Simone, freescapes labs, 2011
 //
 
 #import "cocos2d.h"

@@ -24,19 +24,21 @@
  */
 
 //
-// A class that transforms a texture into a grid
+// This class, based on original work by Ricardo Quesada, gives a node
+// that can be initialized with a texture (a sort of light sprite)
+// its main aim is making "light grid effects" possible.
+// You can use it in place of a CCSprite when you need to apply
+// animations effects based on CCGrid3D or CCTiledGrid3D.
+//
+// Sergio De Simone, freescapes labs, 2011
 //
 
 #import "SDSFastGrid.h"
 
-@interface SDSFastGrid(Private)
--(void)calculateVertexPoints;
--(void)updateTextureCoords:(CGRect)rect;
--(void)setTextureRectInPixels:(CGRect)rect rotated:(BOOL)rotated untrimmedSize:(CGSize)untrimmedSize;
--(void)setTextureRect:(CGRect)rect;
-@end
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
 @implementation SDSFastGrid
 
 @synthesize sprite = sprite_;
@@ -110,27 +112,31 @@
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setPosition:(CGPoint)newPosition {
     [super setPosition:newPosition];
     sprite_.position = newPosition;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////
 -(void) setOpacity:(GLubyte) anOpacity {
     sprite_.opacity = anOpacity;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////
 -(GLubyte) opacity
 {
 	return sprite_.opacity;
 }
 
 
-// override "slow grid"
+//////////////////////////////////////////////////////////////////////////////////////////////
 - (CCGridBase*)grid
 {
 	return fastGrid_;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setGrid:(CCGridBase*)grid
 {
 	[grid setIsTextureFlipped:YES];
@@ -139,7 +145,7 @@
 	[fastGrid_ setTexture:texture_];
 }
 
-// set texture into fastgrid if a new texture is set
+//////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setTexture:(CCTexture2D*) texture
 {
 	[texture_ release];
@@ -147,6 +153,7 @@
 	[fastGrid_ setTexture:texture_];
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////
 - (CCTexture2D*)texture
 {
 	return texture_;
