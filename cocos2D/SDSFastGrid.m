@@ -128,31 +128,42 @@
 + (id)gridWithSpriteFrameName:(NSString*)frameName {
 	return [[[self alloc] initWithSpriteFrameName:frameName] autorelease];
 }
-
+/*
 //////////////////////////////////////////////////////////////////////////////////////////////
 - (id)initWithSprite:(CCSprite*)sprite {
     if ((self = [super init])) {
         sprite_ = [sprite retain];
-        NSLog(@"CREATED SPRITE FOR %x", sprite_);
+
         self.texture = sprite.texture;
-        shouldRecalcGridVertices = YES;
+        shouldRecalcGridVertices = NO;
         
         CGSize size = [[CCDirector sharedDirector] winSizeInPixels];
+        unsigned int POTWide = ccNextPOT(size.width);
+        unsigned int POTHigh = ccNextPOT(size.height);
         
-        hscale_ = sprite_.contentSize.width/size.width;
-        vscale_ = sprite_.contentSize.height/size.height;
-        postOffset_ = 0.0;
+        hscale_ = sprite_.contentSize.width/[SDSFastGrid maxDimension:sprite_.contentSize.width lessThanPOT:POTWide];
+        vscale_ = sprite_.contentSize.height/[SDSFastGrid maxDimension:sprite_.contentSize.height lessThanPOT:POTHigh];
+        postOffset_ = size.height - [SDSFastGrid maxDimension:sprite_.contentSize.height lessThanPOT:POTHigh];
         
         [self setContentSize:sprite.textureRect.size];
     }
     return self;
 }
-
+*/
 //////////////////////////////////////////////////////////////////////////////////////////////
 - (id)initWithSpriteFrameName:(NSString*)frameName {
-    CCSpriteFrame* frame = [[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:frameName];
-    if ((self = [self initWithSprite:[CCSprite spriteWithSpriteFrame:frame]])) {
-        frame_ = frame;
+    if ((self = [super init])) {
+        frame_ = [[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:frameName] retain];
+        self.sprite = [CCSprite spriteWithSpriteFrame:frame_];
+        self.texture = sprite_.texture;
+        shouldRecalcGridVertices = YES;
+        
+        CGSize size = [[CCDirector sharedDirector] winSizeInPixels];
+        hscale_ = sprite_.contentSize.width/size.width;
+        vscale_ = sprite_.contentSize.height/size.height;
+        postOffset_ = 0.0;
+        
+        [self setContentSize:sprite_.textureRect.size];
     }
     return self;
 }
@@ -180,6 +191,7 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 - (void)dealloc {
+    [frame_ release]; frame_ = nil;
 	[sprite_ release]; sprite_ = nil;
 	[texture_ release]; texture_ = nil;
 	[fastGrid_ release]; fastGrid_ = nil;
