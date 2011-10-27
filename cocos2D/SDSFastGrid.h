@@ -56,6 +56,7 @@
 @property (nonatomic, readonly) bool isActive;
 
 + (id)gridWithFile:(NSString*)fileName;
++ (id)gridWithSpriteFrame:(CCSpriteFrame*)frame;
 + (id)gridWithSpriteFrameName:(NSString*)frameName;
 
 - (id)initWithSpriteFrameName:(NSString*)frameName;

@@ -145,6 +145,12 @@
 + (id)gridWithSpriteFrameName:(NSString*)frameName {
 	return [[[self alloc] initWithSpriteFrameName:frameName] autorelease];
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////
++ (id)gridWithSpriteFrame:(CCSpriteFrame*)frame {
+	return [[[self alloc] initWithSpriteFrame:frame] autorelease];
+}
+
 /*
 //////////////////////////////////////////////////////////////////////////////////////////////
 - (id)initWithSprite:(CCSprite*)sprite {
@@ -167,10 +173,11 @@
     return self;
 }
 */
+
 //////////////////////////////////////////////////////////////////////////////////////////////
-- (id)initWithSpriteFrameName:(NSString*)frameName {
+- (id)initWithSpriteFrame:(CCSpriteFrame*)frame {
     if ((self = [super init])) {
-        frame_ = [[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:frameName] retain];
+        frame_ = [frame retain];
         self.sprite = [CCSprite spriteWithSpriteFrame:frame_];
         self.texture = sprite_.texture;
         shouldRecalcGridVertices = YES;
@@ -183,6 +190,12 @@
         [self setContentSize:sprite_.textureRect.size];
     }
     return self;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+- (id)initWithSpriteFrameName:(NSString*)frameName {
+    return [self initWithSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache]
+                                       spriteFrameByName:frameName]];
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
