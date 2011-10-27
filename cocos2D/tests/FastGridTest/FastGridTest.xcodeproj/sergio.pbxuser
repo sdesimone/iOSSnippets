@@ -1,0 +1,69 @@
+// !$*UTF8*$!
+{
+	1D6058900D05DD3D006BFB54 /* FastGridTest */ = {
+		activeExec = 0;
+		executables = (
+			49C9986C1459DD6600BF7144 /* FastGridTest */,
+		);
+	};
+	29B97313FDCFA39411CA2CEA /* Project object */ = {
+		activeBuildConfigurationName = Debug;
+		activeExecutable = 49C9986C1459DD6600BF7144 /* FastGridTest */;
+		activeTarget = 1D6058900D05DD3D006BFB54 /* FastGridTest */;
+		codeSenseManager = 49C998771459DD7300BF7144 /* Code sense */;
+		executables = (
+			49C9986C1459DD6600BF7144 /* FastGridTest */,
+		);
+		perUserDictionary = {
+			PBXPerProjectTemplateStateSaveDate = 341433702;
+			PBXWorkspaceStateSaveDate = 341433702;
+		};
+		sourceControlManager = 49C998761459DD7300BF7144 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	49C9986C1459DD6600BF7144 /* FastGridTest */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = FastGridTest;
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+	};
+	49C998761459DD7300BF7144 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	49C998771459DD7300BF7144 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	506EE05D10304ED200A389B3 /* cocos2d libraries */ = {
+		activeExec = 0;
+	};
+}
