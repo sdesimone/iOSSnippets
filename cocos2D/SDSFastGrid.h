@@ -35,14 +35,17 @@
 
 #import "cocos2d.h"
 
-/** Base class for other
- */
+//////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
 @interface SDSFastGrid : CCNode
 {
 	CCTexture2D		*texture_;
+    CCSpriteFrame   *frame_;
 
 	CCSprite		*sprite_;
 	CCGridBase		*fastGrid_;
+    bool            shouldRecalcGridVertices;
     
     float           hscale_, vscale_, postOffset_;
 }
@@ -50,14 +53,12 @@
 /** texture used */
 @property (nonatomic, readwrite, retain) CCTexture2D* texture;
 @property (nonatomic, readwrite, retain) CCSprite* sprite;
+@property (nonatomic, readonly) bool isActive;
 
-/** creates and initializes a grid with a texture and a grid size */
-+(id)gridWithTexture:(CCTexture2D*)texture;
++ (id)gridWithFile:(NSString*)fileName;
++ (id)gridWithSpriteFrameName:(NSString*)frameName;
 
-+(id)gridWithFile:(NSString*)fileName;
-
-/** initializes a grid with a texture and a grid size */
--(id)initWithTexture:(CCTexture2D*)texture;
+- (id)initWithSpriteFrameName:(NSString*)frameName;
 
 + (float)maxDimension:(float)x lessThanPOT:(float)max;
 

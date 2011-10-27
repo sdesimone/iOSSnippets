@@ -39,21 +39,122 @@
 //////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
+@interface CCGrid3D(SDSCocosExtension)
+-(void)calculateTexCoordsForFrame:(CCSpriteFrame*)frame;
+@end
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
+@implementation CCGrid3D(SDSCocosExtension)
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+-(void)calculateTexCoordsForFrame:(CCSpriteFrame*)frame {
+	float width = (float)texture_.pixelsWide;
+	float height = (float)texture_.pixelsHigh;
+	float imageH = texture_.contentSizeInPixels.height;
+    
+    CGRect rect = frame.rectInPixels;
+	
+	int x, y, i;
+	
+	texCoordinates = malloc((gridSize_.x+1)*(gridSize_.y+1)*sizeof(CGPoint));
+	float *texArray = (float*)texCoordinates;
+	
+    float xoff = rect.origin.x;
+    float yoff = imageH - rect.origin.y - rect.size.height;
+    float xext = rect.size.width;
+    float yext = rect.size.height;
+
+	for (x = 0; x < gridSize_.x; x++) {
+		for( y = 0; y < gridSize_.y; y++ ) {
+            
+			GLushort a = x * (gridSize_.y+1) + y;
+			GLushort b = (x+1) * (gridSize_.y+1) + y;
+			GLushort c = (x+1) * (gridSize_.y+1) + (y+1);
+			GLushort d = x * (gridSize_.y+1) + (y+1);
+			
+			int tex1[4] = { a*2, b*2, c*2, d*2 };
+            
+            float xx1 = x*xext/gridSize_.x + xoff;
+            float xx2 = xx1 + xext/gridSize_.x;
+            float yy1 = y*yext/gridSize_.y + yoff;
+            float yy2 = yy1 + yext/gridSize_.y;
+            CGPoint tex2[4] = { ccp(xx1, yy1), ccp(xx2, yy1), ccp(xx2, yy2), ccp(xx1, yy2) };
+            CGPoint tex2rot[4] = { ccp(xx2, yy1), ccp(xx2, yy2), ccp(xx1, yy2), ccp(xx1, yy1) };
+            CGPoint* tt = tex2;
+            if (frame.rotated) {
+                tt = tex2rot;
+                rect.size = CGSizeMake(rect.size.height, rect.size.width);
+            }
+            
+			for(i = 0; i < 4; i++)
+			{
+				texArray[ tex1[i] ] = tt[i].x / width;
+				if( isTextureFlipped_ )
+					texArray[ tex1[i] + 1 ] = (imageH - tt[i].y) / height;
+				else
+					texArray[ tex1[i] + 1 ] = tt[i].y / height;
+            }
+		}
+	}
+}
+
+@end
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
+@interface SDSFastGrid(PrivateMethods)
+- (id)initWithTexture:(CCTexture2D*)texture;
+- (id)initWithSprite:(CCSprite*)sprite;
+@end
+
+
 @implementation SDSFastGrid
 
 @synthesize sprite = sprite_;
-
-//////////////////////////////////////////////////////////////////////////////////////////////
-+ (id)gridWithTexture:(CCTexture2D*)texture {
-	return [[[self alloc] initWithTexture:texture] autorelease];
-}
+@dynamic isActive;
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 +(id)gridWithFile:(NSString*)fileName {
     CCTexture2D* texture = [[CCTextureCache sharedTextureCache] addImage:fileName];
     if (texture)
-        return [SDSFastGrid gridWithTexture:texture];
+        return [[SDSFastGrid alloc] initWithTexture:texture];
     return nil;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
++ (id)gridWithSpriteFrameName:(NSString*)frameName {
+	return [[[self alloc] initWithSpriteFrameName:frameName] autorelease];
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+- (id)initWithSprite:(CCSprite*)sprite {
+    if ((self = [super init])) {
+        sprite_ = [sprite retain];
+        NSLog(@"CREATED SPRITE FOR %x", sprite_);
+        self.texture = sprite.texture;
+        shouldRecalcGridVertices = YES;
+        
+        CGSize size = [[CCDirector sharedDirector] winSizeInPixels];
+        
+        hscale_ = sprite_.contentSize.width/size.width;
+        vscale_ = sprite_.contentSize.height/size.height;
+        postOffset_ = 0.0;
+        
+        [self setContentSize:sprite.textureRect.size];
+    }
+    return self;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+- (id)initWithSpriteFrameName:(NSString*)frameName {
+    CCSpriteFrame* frame = [[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:frameName];
+    if ((self = [self initWithSprite:[CCSprite spriteWithSpriteFrame:frame]])) {
+        frame_ = frame;
+    }
+    return self;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,6 +162,7 @@
 	if ((self = [super init])) {
 		self.texture = texture;
 		sprite_ = [[CCSprite alloc] initWithTexture:texture];
+        shouldRecalcGridVertices = NO;
         
         CGSize size = [[CCDirector sharedDirector] winSizeInPixels];
         unsigned int POTWide = ccNextPOT(size.width);
@@ -78,9 +180,9 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 - (void)dealloc {
-	[sprite_ release];
-	[texture_ release];
-	[fastGrid_ release];
+	[sprite_ release]; sprite_ = nil;
+	[texture_ release]; texture_ = nil;
+	[fastGrid_ release]; fastGrid_ = nil;
 		
 	[super dealloc];
 }
@@ -95,7 +197,10 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 - (void)draw {
-	if(fastGrid_ && fastGrid_.active) {
+	if (fastGrid_ && fastGrid_.active) {
+        
+        if (frame_ != nil && [fastGrid_ isKindOfClass:[CCGrid3D class]])
+            [(CCGrid3D*)fastGrid_ calculateTexCoordsForFrame:frame_];
         
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
@@ -110,6 +215,11 @@
 	} else {
 		[sprite_ draw];
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+- (bool)isActive {
+    return (fastGrid_ && fastGrid_.active);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -129,6 +239,12 @@
 	return sprite_.opacity;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////
+-(void) setScale:(float) s
+{
+    [super setScale:s];
+    sprite_.scale = s;
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 - (CCGridBase*)grid
@@ -146,7 +262,7 @@
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-- (void)setTexture:(CCTexture2D*) texture
+- (void)setTexture:(CCTexture2D*)texture
 {
 	[texture_ release];
 	texture_ = [texture retain];
