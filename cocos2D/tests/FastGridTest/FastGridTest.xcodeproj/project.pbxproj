@@ -14,7 +14,7 @@
 		491C10E514588F32006A4BCD /* HelloWorldScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 491C10E314588F32006A4BCD /* HelloWorldScene.m */; };
 		491C119514596A79006A4BCD /* arb245x50.png in Resources */ = {isa = PBXBuildFile; fileRef = 491C119314596A79006A4BCD /* arb245x50.png */; };
 		491C119614596A79006A4BCD /* arb63x112.png in Resources */ = {isa = PBXBuildFile; fileRef = 491C119414596A79006A4BCD /* arb63x112.png */; };
-		491C11F7145990EF006A4BCD /* SDSFastGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = 491C11F6145990EF006A4BCD /* SDSFastGrid.m */; };
+		49C998E41459E55E00BF7144 /* SDSFastGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C998E31459E55E00BF7144 /* SDSFastGrid.m */; };
 		504DFBCE10AF12E9006D82FE /* CLScoreServerPost.h in Headers */ = {isa = PBXBuildFile; fileRef = 504DFBC810AF12E9006D82FE /* CLScoreServerPost.h */; };
 		504DFBCF10AF12E9006D82FE /* CLScoreServerPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 504DFBC910AF12E9006D82FE /* CLScoreServerPost.m */; };
 		504DFBD010AF12E9006D82FE /* CLScoreServerRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 504DFBCA10AF12E9006D82FE /* CLScoreServerRequest.h */; };
@@ -274,8 +274,8 @@
 		491C10E814588F5B006A4BCD /* HelloWorldScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelloWorldScene.h; sourceTree = "<group>"; };
 		491C119314596A79006A4BCD /* arb245x50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arb245x50.png; sourceTree = "<group>"; };
 		491C119414596A79006A4BCD /* arb63x112.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arb63x112.png; sourceTree = "<group>"; };
-		491C11F5145990EF006A4BCD /* SDSFastGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDSFastGrid.h; path = ../../Documents/github/iOSSnippets/cocos2D/SDSFastGrid.h; sourceTree = SOURCE_ROOT; };
-		491C11F6145990EF006A4BCD /* SDSFastGrid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDSFastGrid.m; path = ../../Documents/github/iOSSnippets/cocos2D/SDSFastGrid.m; sourceTree = SOURCE_ROOT; };
+		49C998E21459E55E00BF7144 /* SDSFastGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDSFastGrid.h; path = ../../SDSFastGrid.h; sourceTree = SOURCE_ROOT; };
+		49C998E31459E55E00BF7144 /* SDSFastGrid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDSFastGrid.m; path = ../../SDSFastGrid.m; sourceTree = SOURCE_ROOT; };
 		504DFBC810AF12E9006D82FE /* CLScoreServerPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLScoreServerPost.h; sourceTree = "<group>"; };
 		504DFBC910AF12E9006D82FE /* CLScoreServerPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLScoreServerPost.m; sourceTree = "<group>"; };
 		504DFBCA10AF12E9006D82FE /* CLScoreServerRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLScoreServerRequest.h; sourceTree = "<group>"; };
@@ -598,8 +598,8 @@
 		2D500B1D0D5A766B00DBA0E3 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				491C11F5145990EF006A4BCD /* SDSFastGrid.h */,
-				491C11F6145990EF006A4BCD /* SDSFastGrid.m */,
+				49C998E21459E55E00BF7144 /* SDSFastGrid.h */,
+				49C998E31459E55E00BF7144 /* SDSFastGrid.m */,
 				491C10E314588F32006A4BCD /* HelloWorldScene.m */,
 				491C10E814588F5B006A4BCD /* HelloWorldScene.h */,
 				E0F80F5D120A0182005866B8 /* GameConfig.h */,
@@ -1157,7 +1157,7 @@
 				1F3B9A2D0EF2145700286867 /* provaCocos2AppDelegate.m in Sources */,
 				E0F80F60120A0182005866B8 /* RootViewController.m in Sources */,
 				491C10E514588F32006A4BCD /* HelloWorldScene.m in Sources */,
-				491C11F7145990EF006A4BCD /* SDSFastGrid.m in Sources */,
+				49C998E41459E55E00BF7144 /* SDSFastGrid.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,13 +10,16 @@
 		activeBuildConfigurationName = Debug;
 		activeExecutable = 49C9986C1459DD6600BF7144 /* FastGridTest */;
 		activeTarget = 1D6058900D05DD3D006BFB54 /* FastGridTest */;
+		addToTargets = (
+			1D6058900D05DD3D006BFB54 /* FastGridTest */,
+		);
 		codeSenseManager = 49C998771459DD7300BF7144 /* Code sense */;
 		executables = (
 			49C9986C1459DD6600BF7144 /* FastGridTest */,
 		);
 		perUserDictionary = {
-			PBXPerProjectTemplateStateSaveDate = 341433702;
-			PBXWorkspaceStateSaveDate = 341433702;
+			PBXPerProjectTemplateStateSaveDate = 341435704;
+			PBXWorkspaceStateSaveDate = 341435704;
 		};
 		sourceControlManager = 49C998761459DD7300BF7144 /* Source Control */;
 		userBuildSettings = {
