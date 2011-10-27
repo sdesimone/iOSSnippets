@@ -56,18 +56,25 @@
     
     CGRect rect = frame.rectInPixels;
 	
-	int x, y, i;
+	int gx, gy, i;
 	
 	texCoordinates = malloc((gridSize_.x+1)*(gridSize_.y+1)*sizeof(CGPoint));
 	float *texArray = (float*)texCoordinates;
 	
+    if (frame.rotated) {
+        rect.size = CGSizeMake(rect.size.height, rect.size.width);
+    }
     float xoff = rect.origin.x;
     float yoff = imageH - rect.origin.y - rect.size.height;
     float xext = rect.size.width;
     float yext = rect.size.height;
 
-	for (x = 0; x < gridSize_.x; x++) {
-		for( y = 0; y < gridSize_.y; y++ ) {
+	for (gx = 0; gx < gridSize_.x; gx++) {
+		for(gy = 0; gy < gridSize_.y; gy++) {
+            
+            int x = gx;
+            int y = gy;
+            float xx1, xx2, yy1, yy2;
             
 			GLushort a = x * (gridSize_.y+1) + y;
 			GLushort b = (x+1) * (gridSize_.y+1) + y;
@@ -76,25 +83,35 @@
 			
 			int tex1[4] = { a*2, b*2, c*2, d*2 };
             
-            float xx1 = x*xext/gridSize_.x + xoff;
-            float xx2 = xx1 + xext/gridSize_.x;
-            float yy1 = y*yext/gridSize_.y + yoff;
-            float yy2 = yy1 + yext/gridSize_.y;
-            CGPoint tex2[4] = { ccp(xx1, yy1), ccp(xx2, yy1), ccp(xx2, yy2), ccp(xx1, yy2) };
-            CGPoint tex2rot[4] = { ccp(xx2, yy1), ccp(xx2, yy2), ccp(xx1, yy2), ccp(xx1, yy1) };
-            CGPoint* tt = tex2;
+            //-- if frame is rotated, each grid element must be mapped on to the corresponding texture area
             if (frame.rotated) {
-                tt = tex2rot;
-                rect.size = CGSizeMake(rect.size.height, rect.size.width);
+                x = gy;
+                y = gridSize_.x - gx - 1;
+                
+                xx1 = x * xext/gridSize_.y + xoff;
+                xx2 = xx1 + xext/gridSize_.y;
+                yy1 = y * yext/gridSize_.x + yoff;
+                yy2 = yy1 + yext/gridSize_.x;
+                
+            } else {
+                
+                xx1 = x * xext/gridSize_.x + xoff;
+                xx2 = xx1 + xext/gridSize_.x;
+                yy1 = y * yext/gridSize_.y + yoff;
+                yy2 = yy1 + yext/gridSize_.y;
+                
             }
             
-			for(i = 0; i < 4; i++)
-			{
-				texArray[ tex1[i] ] = tt[i].x / width;
-				if( isTextureFlipped_ )
-					texArray[ tex1[i] + 1 ] = (imageH - tt[i].y) / height;
+            CGPoint tex2[4] = { ccp(xx1, yy1), ccp(xx2, yy1), ccp(xx2, yy2), ccp(xx1, yy2) };
+
+            //-- if frame is rotated, coords order is: 3, 0, 1, 2 instead of 0, 1, 2, 3
+			for (i = 0; i < 4; i++) {
+                short k = (i + (frame.rotated?3:0))%4;
+				texArray[ tex1[i] ] = tex2[k].x / width;
+				if(isTextureFlipped_)
+					texArray[ tex1[i] + 1 ] = (imageH - tex2[k].y) / height;
 				else
-					texArray[ tex1[i] + 1 ] = tt[i].y / height;
+					texArray[ tex1[i] + 1 ] = tex2[k].y / height;
             }
 		}
 	}
