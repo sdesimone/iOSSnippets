@@ -114,7 +114,7 @@
 	return scene;
 }
 
-NSString* files[] = {
+NSString* frames[] = {
     @"arb245x50.png",
     @"arb265x50.png",
     @"arb285x50.png",
@@ -132,21 +132,28 @@ NSString* files[] = {
     @"arb50x490.png"
 };
 
+NSString* files[] = {
+    @"esp1.00073.png",
+    @"arb245x50.png",
+    @"arb63x112.png"
+};
+
 CCLabelTTF *label = nil;
 
 /////////////////////////////////////////////////////////////////////////////////////////
-- (CCNode*)nextSprite {
+- (CCNode*)nextSpriteFrom:(NSString**)array {
     static short currentIndex = 0;
-    if (currentIndex >= sizeof(files)/sizeof(files[0])) currentIndex = 0;
+    if (currentIndex >= sizeof(array)/sizeof(array[0]))
+        currentIndex = 0;
     
     CCNode* node = [self getChildByTag:1];
     if (!node) return nil;
     SDSFastGrid* anima = (SDSFastGrid*)[node getChildByTag:1];
     [anima removeFromParentAndCleanup:YES];
     
-    [label setString:files[currentIndex++]];
-//    anima = [SDSFastGrid gridWithFile:label.string];
-    anima = [SDSFastGrid gridWithSpriteFrameName:label.string];
+    [label setString:array[currentIndex++]];
+    anima = [SDSFastGrid gridWithFile:label.string];
+//    anima = [SDSFastGrid gridWithSpriteFrameName:label.string];
     
     NSLog(@"DRAWING %@", label.string);
     [node addChild:anima z:1 tag:1];
@@ -166,7 +173,7 @@ CCLabelTTF *label = nil;
                        [CCStopGrid action],
                        nil];
     
-    [[self nextSprite] runAction:effect];
+    [[self nextSpriteFrom:files] runAction:effect];
 }
 
 

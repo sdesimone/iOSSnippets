@@ -15,6 +15,7 @@
 		491C119514596A79006A4BCD /* arb245x50.png in Resources */ = {isa = PBXBuildFile; fileRef = 491C119314596A79006A4BCD /* arb245x50.png */; };
 		491C119614596A79006A4BCD /* arb63x112.png in Resources */ = {isa = PBXBuildFile; fileRef = 491C119414596A79006A4BCD /* arb63x112.png */; };
 		49C998E41459E55E00BF7144 /* SDSFastGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C998E31459E55E00BF7144 /* SDSFastGrid.m */; };
+		49C998E81459E5EF00BF7144 /* esp1.00073.png in Resources */ = {isa = PBXBuildFile; fileRef = 49C998E71459E5EF00BF7144 /* esp1.00073.png */; };
 		504DFBCE10AF12E9006D82FE /* CLScoreServerPost.h in Headers */ = {isa = PBXBuildFile; fileRef = 504DFBC810AF12E9006D82FE /* CLScoreServerPost.h */; };
 		504DFBCF10AF12E9006D82FE /* CLScoreServerPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 504DFBC910AF12E9006D82FE /* CLScoreServerPost.m */; };
 		504DFBD010AF12E9006D82FE /* CLScoreServerRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 504DFBCA10AF12E9006D82FE /* CLScoreServerRequest.h */; };
@@ -276,6 +277,7 @@
 		491C119414596A79006A4BCD /* arb63x112.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arb63x112.png; sourceTree = "<group>"; };
 		49C998E21459E55E00BF7144 /* SDSFastGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDSFastGrid.h; path = ../../SDSFastGrid.h; sourceTree = SOURCE_ROOT; };
 		49C998E31459E55E00BF7144 /* SDSFastGrid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDSFastGrid.m; path = ../../SDSFastGrid.m; sourceTree = SOURCE_ROOT; };
+		49C998E71459E5EF00BF7144 /* esp1.00073.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = esp1.00073.png; sourceTree = "<group>"; };
 		504DFBC810AF12E9006D82FE /* CLScoreServerPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLScoreServerPost.h; sourceTree = "<group>"; };
 		504DFBC910AF12E9006D82FE /* CLScoreServerPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLScoreServerPost.m; sourceTree = "<group>"; };
 		504DFBCA10AF12E9006D82FE /* CLScoreServerRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLScoreServerRequest.h; sourceTree = "<group>"; };
@@ -717,6 +719,7 @@
 		50F414EB1069373D002A0D5E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				49C998E71459E5EF00BF7144 /* esp1.00073.png */,
 				491C119314596A79006A4BCD /* arb245x50.png */,
 				491C119414596A79006A4BCD /* arb63x112.png */,
 				491C10DD14588F08006A4BCD /* img.sheet.plist */,
@@ -1143,6 +1146,7 @@
 				491C10E014588F08006A4BCD /* img.sheet.png in Resources */,
 				491C119514596A79006A4BCD /* arb245x50.png in Resources */,
 				491C119614596A79006A4BCD /* arb63x112.png in Resources */,
+				49C998E81459E5EF00BF7144 /* esp1.00073.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

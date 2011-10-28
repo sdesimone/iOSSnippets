@@ -132,6 +132,8 @@
 
 @synthesize sprite = sprite_;
 @dynamic isActive;
+@dynamic flipX;
+@dynamic flipY;
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 +(id)gridWithFile:(NSString*)fileName {
@@ -248,7 +250,16 @@
         glPushMatrix();
         
         glBindTexture(GL_TEXTURE_2D, [texture_ name]);
+        if (sprite_.flipX) {
+            ccglTranslate(sprite_.textureRect.size.width, 0, 0);
+            glScalef(-1.0, 1.0, 1.0);
+        }
+        if (sprite_.flipY) {
+            ccglTranslate(0, sprite_.textureRect.size.height, 0);
+            glScalef(1.0, -1.0, 1.0);
+        }
         glScalef(hscale_, vscale_, 1.0);
+
         ccglTranslate(0, -postOffset_, 0);
 
 		[fastGrid_ blit];
@@ -279,6 +290,26 @@
 -(GLubyte) opacity
 {
 	return sprite_.opacity;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+- (bool)flipX {
+    return sprite_.flipX;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+- (void)setFlipX:(bool)flip {
+    sprite_.flipX = flip;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+- (bool)flipY {
+    return sprite_.flipY;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+- (void)setFlipY:(bool)flip {
+    sprite_.flipY = flip;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
