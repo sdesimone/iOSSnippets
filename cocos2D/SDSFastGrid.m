@@ -243,6 +243,9 @@
 - (void)draw {
 	if (fastGrid_ && fastGrid_.active) {
         
+        if (sprite_.blendFunc.src != CC_BLEND_SRC || sprite_.blendFunc.dst != CC_BLEND_DST)
+            glBlendFunc( sprite_.blendFunc.src, sprite_.blendFunc.dst );
+                
         if (frame_ != nil && [fastGrid_ isKindOfClass:[CCGrid3D class]])
             [(CCGrid3D*)fastGrid_ calculateTexCoordsForFrame:frame_];
         
