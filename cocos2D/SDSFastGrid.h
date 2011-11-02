@@ -47,7 +47,7 @@
 	CCGridBase		*fastGrid_;
     bool            shouldRecalcGridVertices;
     
-    float           hscale_, vscale_, postOffset_;
+    float           hscale_, vscale_, hOffset_, vOffset_;
 }
 
 /** texture used */

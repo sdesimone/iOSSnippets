@@ -185,9 +185,12 @@
         shouldRecalcGridVertices = YES;
         
         CGSize size = [[CCDirector sharedDirector] winSizeInPixels];
-        hscale_ = sprite_.contentSize.width/size.width;
-        vscale_ = sprite_.contentSize.height/size.height;
-        postOffset_ = 0.0;
+//        vscale_ = sprite_.contentSize.height/size.height;
+//        hscale_ = sprite_.contentSize.width/size.width;
+        hscale_ = frame.rectInPixels.size.width/size.width;
+        vscale_ = frame.rectInPixels.size.height/size.height;
+        hOffset_ = (frame.rectInPixels.size.width - frame.originalSizeInPixels.width)/2 / hscale_;
+        vOffset_ =  (frame.rectInPixels.size.height - frame.originalSizeInPixels.height)/2 / vscale_;
         
         [self setContentSize:sprite_.textureRect.size];
     }
@@ -213,7 +216,7 @@
 
         hscale_ = sprite_.contentSize.width/[SDSFastGrid maxDimension:sprite_.contentSize.width lessThanPOT:POTWide];
         vscale_ = sprite_.contentSize.height/[SDSFastGrid maxDimension:sprite_.contentSize.height lessThanPOT:POTHigh];
-        postOffset_ = size.height - [SDSFastGrid maxDimension:sprite_.contentSize.height lessThanPOT:POTHigh];
+        vOffset_ = size.height - [SDSFastGrid maxDimension:sprite_.contentSize.height lessThanPOT:POTHigh];
         
         [self setContentSize:sprite_.textureRect.size];
 	}
@@ -263,7 +266,7 @@
         }
         glScalef(hscale_, vscale_, 1.0);
 
-        ccglTranslate(0, -postOffset_, 0);
+        ccglTranslate(-hOffset_, -vOffset_, 0);
 
 		[fastGrid_ blit];
         glPopMatrix();

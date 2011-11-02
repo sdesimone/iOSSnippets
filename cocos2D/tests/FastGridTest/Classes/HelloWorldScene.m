@@ -115,6 +115,9 @@
 }
 
 NSString* frames[] = {
+    @"arb1.png",
+    @"arb2.png",
+    @"arb3.png",
     @"arb245x50.png",
     @"arb265x50.png",
     @"arb285x50.png",
@@ -140,10 +143,12 @@ NSString* files[] = {
 
 CCLabelTTF *label = nil;
 
+#define numOfElements 3
+
 /////////////////////////////////////////////////////////////////////////////////////////
 - (CCNode*)nextSpriteFrom:(NSString**)array {
     static short currentIndex = 0;
-    if (currentIndex >= sizeof(array)/sizeof(array[0]))
+    if (currentIndex >= numOfElements)
         currentIndex = 0;
     
     CCNode* node = [self getChildByTag:1];
@@ -152,8 +157,8 @@ CCLabelTTF *label = nil;
     [anima removeFromParentAndCleanup:YES];
     
     [label setString:array[currentIndex++]];
-    anima = [SDSFastGrid gridWithFile:label.string];
-//    anima = [SDSFastGrid gridWithSpriteFrameName:label.string];
+//    anima = [SDSFastGrid gridWithFile:label.string];
+    anima = [SDSFastGrid gridWithSpriteFrameName:label.string];
     
     NSLog(@"DRAWING %@", label.string);
     [node addChild:anima z:1 tag:1];
@@ -173,7 +178,7 @@ CCLabelTTF *label = nil;
                        [CCStopGrid action],
                        nil];
     
-    [[self nextSpriteFrom:files] runAction:effect];
+    [[self nextSpriteFrom:frames] runAction:effect];
 }
 
 
@@ -209,6 +214,7 @@ CCLabelTTF *label = nil;
         [self addChild:node z:1 tag:1];
         
         [self cacheTexture:@"img.sheet"];
+        [self cacheTexture:@"arbres+spirits"];
         
         [self schedule:@selector(startAnimation) interval:2.0];
         

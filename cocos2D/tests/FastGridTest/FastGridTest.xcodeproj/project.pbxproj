@@ -14,6 +14,8 @@
 		491C10E514588F32006A4BCD /* HelloWorldScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 491C10E314588F32006A4BCD /* HelloWorldScene.m */; };
 		491C119514596A79006A4BCD /* arb245x50.png in Resources */ = {isa = PBXBuildFile; fileRef = 491C119314596A79006A4BCD /* arb245x50.png */; };
 		491C119614596A79006A4BCD /* arb63x112.png in Resources */ = {isa = PBXBuildFile; fileRef = 491C119414596A79006A4BCD /* arb63x112.png */; };
+		493EC4AC14615D8E0050BBAA /* arbres+spirits.plist in Resources */ = {isa = PBXBuildFile; fileRef = 493EC4AA14615D8E0050BBAA /* arbres+spirits.plist */; };
+		493EC4AD14615D8E0050BBAA /* arbres+spirits.png in Resources */ = {isa = PBXBuildFile; fileRef = 493EC4AB14615D8E0050BBAA /* arbres+spirits.png */; };
 		49C998E41459E55E00BF7144 /* SDSFastGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C998E31459E55E00BF7144 /* SDSFastGrid.m */; };
 		49C998E81459E5EF00BF7144 /* esp1.00073.png in Resources */ = {isa = PBXBuildFile; fileRef = 49C998E71459E5EF00BF7144 /* esp1.00073.png */; };
 		504DFBCE10AF12E9006D82FE /* CLScoreServerPost.h in Headers */ = {isa = PBXBuildFile; fileRef = 504DFBC810AF12E9006D82FE /* CLScoreServerPost.h */; };
@@ -275,6 +277,8 @@
 		491C10E814588F5B006A4BCD /* HelloWorldScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelloWorldScene.h; sourceTree = "<group>"; };
 		491C119314596A79006A4BCD /* arb245x50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arb245x50.png; sourceTree = "<group>"; };
 		491C119414596A79006A4BCD /* arb63x112.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arb63x112.png; sourceTree = "<group>"; };
+		493EC4AA14615D8E0050BBAA /* arbres+spirits.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "arbres+spirits.plist"; sourceTree = "<group>"; };
+		493EC4AB14615D8E0050BBAA /* arbres+spirits.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arbres+spirits.png"; sourceTree = "<group>"; };
 		49C998E21459E55E00BF7144 /* SDSFastGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDSFastGrid.h; path = ../../SDSFastGrid.h; sourceTree = SOURCE_ROOT; };
 		49C998E31459E55E00BF7144 /* SDSFastGrid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDSFastGrid.m; path = ../../SDSFastGrid.m; sourceTree = SOURCE_ROOT; };
 		49C998E71459E5EF00BF7144 /* esp1.00073.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = esp1.00073.png; sourceTree = "<group>"; };
@@ -719,6 +723,8 @@
 		50F414EB1069373D002A0D5E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				493EC4AA14615D8E0050BBAA /* arbres+spirits.plist */,
+				493EC4AB14615D8E0050BBAA /* arbres+spirits.png */,
 				49C998E71459E5EF00BF7144 /* esp1.00073.png */,
 				491C119314596A79006A4BCD /* arb245x50.png */,
 				491C119414596A79006A4BCD /* arb63x112.png */,
@@ -1147,6 +1153,8 @@
 				491C119514596A79006A4BCD /* arb245x50.png in Resources */,
 				491C119614596A79006A4BCD /* arb63x112.png in Resources */,
 				49C998E81459E5EF00BF7144 /* esp1.00073.png in Resources */,
+				493EC4AC14615D8E0050BBAA /* arbres+spirits.plist in Resources */,
+				493EC4AD14615D8E0050BBAA /* arbres+spirits.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
