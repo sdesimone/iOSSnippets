@@ -35,6 +35,7 @@
 
 #import "SDSFastGrid.h"
 
+#import "Support/TransformUtils.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -192,7 +193,8 @@
         hOffset_ = (frame.rectInPixels.size.width - frame.originalSizeInPixels.width)/2 / hscale_;
         vOffset_ =  (frame.rectInPixels.size.height - frame.originalSizeInPixels.height)/2 / vscale_;
         
-        [self setContentSize:sprite_.textureRect.size];
+//        [self setContentSize:sprite_.textureRect.size];
+        [self setContentSizeInPixels:frame.originalSizeInPixels];
     }
     return self;
 }
@@ -244,6 +246,23 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 - (void)draw {
+    
+    float radians = -CC_DEGREES_TO_RADIANS(rotation_);
+    float c = cosf(radians);
+    float s = sinf(radians);
+    
+    CGAffineTransform matrix = CGAffineTransformMake( c * scaleX_,  s * scaleX_,
+                                   -s * scaleY_, c * scaleY_,
+                                   positionInPixels_.x, positionInPixels_.y);
+    matrix = CGAffineTransformTranslate(matrix, -sprite_.anchorPointInPixels.x, -sprite_.anchorPointInPixels.y);	
+    
+    GLfloat	glt[16];
+    CGAffineToGL(&matrix, glt);
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glMultMatrixf(glt);
+    
 	if (fastGrid_ && fastGrid_.active) {
         
         if (sprite_.blendFunc.src != CC_BLEND_SRC || sprite_.blendFunc.dst != CC_BLEND_DST)
@@ -251,9 +270,6 @@
                 
         if (frame_ != nil && [fastGrid_ isKindOfClass:[CCGrid3D class]])
             [(CCGrid3D*)fastGrid_ calculateTexCoordsForFrame:frame_];
-        
-        glMatrixMode(GL_MODELVIEW);
-        glPushMatrix();
         
         glBindTexture(GL_TEXTURE_2D, [texture_ name]);
         if (sprite_.flipX) {
@@ -264,16 +280,17 @@
             ccglTranslate(0, sprite_.textureRect.size.height, 0);
             glScalef(1.0, -1.0, 1.0);
         }
+        
         glScalef(hscale_, vscale_, 1.0);
-
         ccglTranslate(-hOffset_, -vOffset_, 0);
-
 		[fastGrid_ blit];
-        glPopMatrix();
 
 	} else {
 		[sprite_ draw];
 	}
+
+    glPopMatrix();
+    
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -340,6 +357,22 @@
 	[fastGrid_ setTexture:texture_];
 }
 
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+-(BOOL) isFrameDisplayed:(CCSpriteFrame*)frame {
+    return [sprite_ isFrameDisplayed:frame];
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+-(void) setDisplayFrame:(CCSpriteFrame*)newFrame {
+    [sprite_ setDisplayFrame:newFrame];
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+-(CCSpriteFrame*) displayedFrame {
+    return [sprite_ displayedFrame];
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setTexture:(CCTexture2D*)texture
 {
@@ -354,6 +387,11 @@
 	return texture_;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////
+- (void)setAnchorPoint:(CGPoint)anchorPoint {
+    [super setAnchorPoint:anchorPoint];
+    sprite_.anchorPoint = anchorPoint;
+}
 
 
 @end

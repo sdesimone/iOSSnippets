@@ -115,9 +115,9 @@
 }
 
 NSString* frames[] = {
-    @"arb1.png",
-    @"arb2.png",
-    @"arb3.png",
+//    @"arb1.png",
+//    @"arb2.png",
+//    @"arb3.png",
     @"arb245x50.png",
     @"arb265x50.png",
     @"arb285x50.png",
@@ -162,6 +162,8 @@ CCLabelTTF *label = nil;
     
     NSLog(@"DRAWING %@", label.string);
     [node addChild:anima z:1 tag:1];
+    node.position = ccp(512, 384);
+    node.anchorPoint = ccp(0.5,0.5);
 
     return anima;
 }
@@ -169,6 +171,7 @@ CCLabelTTF *label = nil;
 /////////////////////////////////////////////////////////////////////////////////////////
 - (void)startAnimation {
     
+    CCNode* node = [self nextSpriteFrom:frames];
     CCWaves* effect = [CCSequence actions:
                        [ODWaves actionWithWaves:2
                                       amplitude:10
@@ -178,7 +181,12 @@ CCLabelTTF *label = nil;
                        [CCStopGrid action],
                        nil];
     
-    [[self nextSpriteFrom:frames] runAction:effect];
+    CCRotateBy* rotate = [CCRotateBy actionWithDuration:1.5 angle:90];
+    CCScaleBy* scale = [CCScaleBy actionWithDuration:1.5 scale:1.5];
+    
+    [node runAction:effect];
+    [node runAction:rotate];
+    [node runAction:scale];
 }
 
 

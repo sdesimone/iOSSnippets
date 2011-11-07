@@ -204,7 +204,7 @@
 				<key>PBXProjectModuleGUID</key>
 				<string>49C998FD1459F55900BF7144</string>
 				<key>PBXProjectModuleLabel</key>
-				<string>SDSFastGrid.m</string>
+				<string>SDSFastGrid.h</string>
 				<key>PBXSplitModuleInNavigatorKey</key>
 				<dict>
 					<key>Split0</key>
@@ -212,16 +212,16 @@
 						<key>PBXProjectModuleGUID</key>
 						<string>49C998FE1459F55900BF7144</string>
 						<key>PBXProjectModuleLabel</key>
-						<string>SDSFastGrid.m</string>
+						<string>SDSFastGrid.h</string>
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>493EC50E14616FAA0050BBAA</string>
+						<string>490647A214681C7500291F0E</string>
 						<key>history</key>
 						<array>
-							<string>493EC4F014616E780050BBAA</string>
 							<string>493EC4F114616E780050BBAA</string>
-							<string>493EC50D14616FAA0050BBAA</string>
+							<string>493EC5331461AAAC0050BBAA</string>
+							<string>493EC5341461AAAC0050BBAA</string>
 						</array>
 					</dict>
 					<key>SplitCount</key>
@@ -237,7 +237,7 @@
 				<key>PBXModuleWindowStatusBarHidden2</key>
 				<false/>
 				<key>RubberWindowFrame</key>
-				<string>361 78 709 800 0 0 1440 878 </string>
+				<string>275 78 709 800 0 0 1440 878 </string>
 			</dict>
 		</dict>
 	</array>
@@ -313,8 +313,6 @@
 									<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 									<array>
 										<array>
-											<integer>6</integer>
-											<integer>4</integer>
 											<integer>0</integer>
 										</array>
 									</array>
@@ -478,8 +476,8 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>493EC4EE14616E780050BBAA</string>
-				<string>493EC4EF14616E780050BBAA</string>
+				<string>490647A014681C7500291F0E</string>
+				<string>490647A114681C7500291F0E</string>
 				<string>1C9437FD063B20B00039CFAC</string>
 				<string>1C9437FE063B20B00039CFAC</string>
 				<string>1C9437FF063B20B00039CFAC</string>
@@ -518,14 +516,9 @@
 	<integer>0</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>493EC50F14616FAA0050BBAA</string>
-		<string>493EC4F514616E780050BBAA</string>
-		<string>493EC4F614616E780050BBAA</string>
-		<string>1C530D5B069F1CE1000CFCEE</string>
-		<string>1C530D54069F1CE1000CFCEE</string>
 		<string>1C530D52069F1CE1000CFCEE</string>
-		<string>/Users/sergio/Documents/github/iOSSnippets/cocos2D/tests/FastGridTest/FastGridTest.xcodeproj</string>
 		<string>49C998FD1459F55900BF7144</string>
+		<string>/Users/sergio/Documents/github/iOSSnippets/cocos2D/tests/FastGridTest/FastGridTest.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
 	<string>946 55 446 419 0 0 1440 878 </string>
@@ -681,8 +674,6 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -705,6 +696,8 @@
 							<string>158pt</string>
 						</dict>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -744,7 +737,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C530D52069F1CE1000CFCEE</string>
-				<string>493EC4CD14616C650050BBAA</string>
+				<string>4906479F14681C5600291F0E</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
