@@ -11,9 +11,85 @@
 
 #import "SDSFastGrid.h"
 
+
+#pragma mark ODLiquid
 /////////////////////////////////////////////////////////////////////////////////////////
-@interface ODWaves : CCGrid3DAction
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+@interface ODLiquid : CCGrid3DAction
 {
+	int waves;
+	float amplitude;
+	float amplitudeRate;
+	
+}
+
+@property (nonatomic,readwrite) float amplitude;
+@property (nonatomic,readwrite) float amplitudeRate;
+
++(id)actionWithWaves:(int)wav amplitude:(float)amp grid:(ccGridSize)gridSize duration:(ccTime)d;
+-(id)initWithWaves:(int)wav amplitude:(float)amp grid:(ccGridSize)gridSize duration:(ccTime)d;
+
+@end
+
+#pragma mark -
+#pragma mark ODLiquid
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+@implementation ODLiquid
+
+@synthesize amplitude;
+@synthesize amplitudeRate;
+
+/////////////////////////////////////////////////////////////////////////////////////////
++(id)actionWithWaves:(int)wav amplitude:(float)amp grid:(ccGridSize)gridSize duration:(ccTime)d {
+	return [[[self alloc] initWithWaves:wav amplitude:amp grid:gridSize duration:d] autorelease];
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
+- (id)initWithWaves:(int)wav amplitude:(float)amp grid:(ccGridSize)gSize duration:(ccTime)d {
+	if ((self = [super initWithSize:gSize duration:d])) {
+		waves = wav;
+		amplitude = amp;
+		amplitudeRate = 1.0f;
+	}
+	
+	return self;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
+- (void)update:(ccTime)time {
+	int i, j;
+	float c = 4*(1/4.0 - (time-1/2.0) * (time-1/2.0));
+	for (i = 1; i < gridSize_.x; i++) {
+		for( j = 1; j < gridSize_.y; j++ ) {
+			ccVertex3F	v = [self originalVertex:ccg(i,j)];
+            float dx = (time-duration_)/duration_*(sinf(time*(CGFloat)M_PI*waves*2 + v.x * .01f * c) * amplitude * amplitudeRate);
+            float dy = (time-duration_)/duration_*(sinf(time*(CGFloat)M_PI*waves*2 + v.y * .01f * c) * amplitude * amplitudeRate);
+			v.x += dy;
+			v.y += dx;
+			[self setVertex:ccg(i,j) vertex:v];
+		}
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
+- (id)copyWithZone:(NSZone*)zone {
+	CCGridAction *copy = [[[self class] allocWithZone:zone] initWithWaves:waves amplitude:amplitude grid:gridSize_ duration:duration_];
+	return copy;
+}
+
+@end
+
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+@interface ODWaves : CCGrid3DAction {
 	int		waves;
 	float	amplitude;
 	float	amplitudeRate;
@@ -49,8 +125,7 @@
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
--(id)initWithWaves:(int)wav amplitude:(float)amp horizontal:(BOOL)h vertical:(BOOL)v grid:(ccGridSize)gSize duration:(ccTime)d
-{
+- (id)initWithWaves:(int)wav amplitude:(float)amp horizontal:(BOOL)h vertical:(BOOL)v grid:(ccGridSize)gSize duration:(ccTime)d {
 	if ( (self = [super initWithSize:gSize duration:d]) )
 	{
 		waves = wav;
@@ -63,24 +138,36 @@
 	return self;
 }
 
+- (float)coeffAtTime:(float)t period:(float)p {
+    return 1.0;
+//    float f = pow(1 - (t-p/2) * (t-p/2), 1/4);
+//    NSLog(@"PHASE FACTOR: %f", f);
+//    return f;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////
 -(void)update:(ccTime)time {
 	for(int i = 0; i < (gridSize_.x+1); i++ ) {
 		for(int j = (gridSize_.y/10*0); j < (gridSize_.y+1); j++ ) {
-            //        for(int j = 0; j < (gridSize.y+1); j++ ) {
+//        for(int j = 0; j < (gridSize_.y+1); j++ ) {
 			ccVertex3F	v = [self originalVertex:ccg(i,j)];
 			if ( vertical )
-				v.x = (v.x + (sinf(time*(CGFloat)M_PI*waves*2 + v.y * .01f) * amplitude * amplitudeRate * j/gridSize_.y));
+				v.x = (v.x + (sinf(time*(CGFloat)M_PI*waves*2 + v.y * .01f) * amplitude * amplitudeRate * MIN(1, j/gridSize_.y/2)));
 			if ( horizontal )
-				v.y = (v.y + (sinf(time*(CGFloat)M_PI*waves*2 + v.x * .01f) * amplitude * amplitudeRate * j/gridSize_.y));
-			[self setVertex:ccg(i,j) vertex:v];
+				v.y = (v.y + (sinf(time*(CGFloat)M_PI*waves*2 + v.x * .01f) * amplitude * amplitudeRate * MIN(1, j/gridSize_.y/2)));
+/*            
+            float c = [self coeffAtTime:time period:1/waves];
+			if ( vertical )
+				v.x = (v.x + (sinf(time*(CGFloat)M_PI*waves*2 + v.y * .01f * c) * amplitude * amplitudeRate));
+			if ( horizontal )
+				v.y = (v.y + (sinf(time*(CGFloat)M_PI*waves*2 + v.x * .01f * c) * amplitude * amplitudeRate));
+*/			[self setVertex:ccg(i,j) vertex:v];
 		}
 	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
--(id) copyWithZone: (NSZone*) zone
-{
+- (id)copyWithZone:(NSZone*)zone {
 	CCGridAction *copy = [[[self class] allocWithZone:zone] initWithWaves:waves amplitude:amplitude horizontal:horizontal vertical:vertical grid:gridSize_ duration:duration_];
 	return copy;
 }
@@ -99,8 +186,7 @@
 // HelloWorld implementation
 @implementation HelloWorld
 
-+(id) scene
-{
++ (id)scene {
 	// 'scene' is an autorelease object.
 	CCScene *scene = [CCScene node];
 	
@@ -115,9 +201,9 @@
 }
 
 NSString* frames[] = {
-//    @"arb1.png",
-//    @"arb2.png",
-//    @"arb3.png",
+    @"arb1.png",
+    @"arb2.png",
+    @"arb3.png",
     @"arb245x50.png",
     @"arb265x50.png",
     @"arb285x50.png",
@@ -143,7 +229,7 @@ NSString* files[] = {
 
 CCLabelTTF *label = nil;
 
-#define numOfElements 3
+#define numOfElements 1
 
 /////////////////////////////////////////////////////////////////////////////////////////
 - (CCNode*)nextSpriteFrom:(NSString**)array {
@@ -153,40 +239,49 @@ CCLabelTTF *label = nil;
     
     CCNode* node = [self getChildByTag:1];
     if (!node) return nil;
+    
     SDSFastGrid* anima = (SDSFastGrid*)[node getChildByTag:1];
     [anima removeFromParentAndCleanup:YES];
     
     [label setString:array[currentIndex++]];
 //    anima = [SDSFastGrid gridWithFile:label.string];
-    anima = [SDSFastGrid gridWithSpriteFrameName:label.string];
+//    anima = [SDSFastGrid gridWithSpriteFrameName:label.string];
+    anima = [CCSprite spriteWithSpriteFrameName:label.string];
+    anima.position = ccp(512, 384);
+    anima.anchorPoint = ccp(1.0,1.0);
     
     NSLog(@"DRAWING %@", label.string);
     [node addChild:anima z:1 tag:1];
-    node.position = ccp(512, 384);
-    node.anchorPoint = ccp(0.5,0.5);
 
     return anima;
 }
 
+#define kDuration 4.0
 /////////////////////////////////////////////////////////////////////////////////////////
 - (void)startAnimation {
     
+    static bool ciccio = true;
+    ciccio = !ciccio;
+    
     CCNode* node = [self nextSpriteFrom:frames];
+    ccGridSize grid = (ciccio ? ccg(5, 4):ccg(5,4));
+    ciccio = 0;
+    
     CCWaves* effect = [CCSequence actions:
-                       [ODWaves actionWithWaves:2
+                       [ODLiquid actionWithWaves:2
                                       amplitude:10
-                                     horizontal:YES vertical:YES
-                                           grid:ccg(10,8)
-                                       duration:1.5],
+//                                     horizontal:YES vertical:YES
+                                            grid:grid
+                                       duration:kDuration],
                        [CCStopGrid action],
                        nil];
     
     CCRotateBy* rotate = [CCRotateBy actionWithDuration:1.5 angle:90];
-    CCScaleBy* scale = [CCScaleBy actionWithDuration:1.5 scale:1.5];
+    CCScaleBy* scale = [CCScaleBy actionWithDuration:1.5 scale:0.5];
     
     [node runAction:effect];
-    [node runAction:rotate];
-    [node runAction:scale];
+//    [node runAction:rotate];
+//    [node runAction:scale];
 }
 
 
@@ -197,7 +292,7 @@ CCLabelTTF *label = nil;
     [self addChild:[CCSpriteBatchNode batchNodeWithFile:[NSString stringWithFormat:@"%@.png", texture]]];
 }
 
-// on "init" you need to initialize your instance
+/////////////////////////////////////////////////////////////////////////////////////////
 -(id) init
 {
 	// always call "super" init
@@ -223,8 +318,9 @@ CCLabelTTF *label = nil;
         
         [self cacheTexture:@"img.sheet"];
         [self cacheTexture:@"arbres+spirits"];
-        
-        [self schedule:@selector(startAnimation) interval:2.0];
+  
+//        [self startAnimation];
+        [self schedule:@selector(startAnimation) interval:kDuration+1.0];
         
 	}
 	return self;

@@ -322,7 +322,13 @@
 	float imageH = texture_.contentSizeInPixels.height;
 	
 	int x, y, i;
-	
+
+	//-- SDS: added this to try and remove leaks
+    if (texCoordinates) free(texCoordinates);
+    if (vertices) free(vertices);
+    if (originalVertices) free(originalVertices);
+    if (indices) free(indices);
+
 	vertices = malloc((gridSize_.x+1)*(gridSize_.y+1)*sizeof(ccVertex3F));
 	originalVertices = malloc((gridSize_.x+1)*(gridSize_.y+1)*sizeof(ccVertex3F));
 	texCoordinates = malloc((gridSize_.x+1)*(gridSize_.y+1)*sizeof(CGPoint));
@@ -378,6 +384,14 @@
 		}
 	}
 	
+/*    for(int i = 0; i < (gridSize_.x+1); i++ ) {
+//        for(int j = 0; j < (gridSize_.y+1); j++ ) {
+		for(int j = (gridSize_.y/10*0); j < (gridSize_.y+1); j++ ) {
+			ccVertex3F	v = [self vertex:ccg(i,j)];
+            NSLog(@"VERTEX (%d, %d): %f, %f", i, j, v.x, v.y);
+		}
+	}
+*/    
 	memcpy(originalVertices, vertices, (gridSize_.x+1)*(gridSize_.y+1)*sizeof(ccVertex3F));
 }
 

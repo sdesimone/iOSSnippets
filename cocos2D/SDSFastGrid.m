@@ -56,9 +56,14 @@
 	float imageH = texture_.contentSizeInPixels.height;
     
     CGRect rect = frame.rectInPixels;
+//    rect.size = frame.originalSizeInPixels;
+//    rect.origin = 
 	
 	int gx, gy, i;
 	
+    if (texCoordinates)
+        free(texCoordinates);
+    
 	texCoordinates = malloc((gridSize_.x+1)*(gridSize_.y+1)*sizeof(CGPoint));
 	float *texArray = (float*)texCoordinates;
 	
@@ -186,13 +191,12 @@
         shouldRecalcGridVertices = YES;
         
         CGSize size = [[CCDirector sharedDirector] winSizeInPixels];
-//        vscale_ = sprite_.contentSize.height/size.height;
-//        hscale_ = sprite_.contentSize.width/size.width;
         hscale_ = frame.rectInPixels.size.width/size.width;
         vscale_ = frame.rectInPixels.size.height/size.height;
         hOffset_ = (frame.rectInPixels.size.width - frame.originalSizeInPixels.width)/2 / hscale_;
         vOffset_ =  (frame.rectInPixels.size.height - frame.originalSizeInPixels.height)/2 / vscale_;
         
+//        [self setContentSize:CGSizeMake(0,0)];
 //        [self setContentSize:sprite_.textureRect.size];
         [self setContentSizeInPixels:frame.originalSizeInPixels];
     }
@@ -251,11 +255,12 @@
     float c = cosf(radians);
     float s = sinf(radians);
     
-    CGAffineTransform matrix = CGAffineTransformMake( c * scaleX_,  s * scaleX_,
-                                   -s * scaleY_, c * scaleY_,
-                                   positionInPixels_.x, positionInPixels_.y);
+/*    CGAffineTransform matrix = CGAffineTransformMake(c * scaleX_,  s * scaleX_,
+                                                     -s * scaleY_, c * scaleY_,
+                                                     0, 0);
     matrix = CGAffineTransformTranslate(matrix, -sprite_.anchorPointInPixels.x, -sprite_.anchorPointInPixels.y);	
     
+*/    CGAffineTransform matrix = CGAffineTransformMakeTranslation(-sprite_.anchorPointInPixels.x, -sprite_.anchorPointInPixels.y);
     GLfloat	glt[16];
     CGAffineToGL(&matrix, glt);
 
@@ -266,10 +271,11 @@
 	if (fastGrid_ && fastGrid_.active) {
         
         if (sprite_.blendFunc.src != CC_BLEND_SRC || sprite_.blendFunc.dst != CC_BLEND_DST)
-            glBlendFunc( sprite_.blendFunc.src, sprite_.blendFunc.dst );
-                
-        if (frame_ != nil && [fastGrid_ isKindOfClass:[CCGrid3D class]])
+            glBlendFunc( sprite_.blendFunc.src, sprite_.blendFunc.dst );        
+        
+        if (frame_ != nil && [fastGrid_ isKindOfClass:[CCGrid3D class]]) {
             [(CCGrid3D*)fastGrid_ calculateTexCoordsForFrame:frame_];
+        }
         
         glBindTexture(GL_TEXTURE_2D, [texture_ name]);
         if (sprite_.flipX) {
@@ -350,7 +356,7 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setGrid:(CCGridBase*)grid
-{
+{    
 	[grid setIsTextureFlipped:YES];
 	[fastGrid_ release];
 	fastGrid_ = [grid retain];
@@ -389,7 +395,7 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setAnchorPoint:(CGPoint)anchorPoint {
-    [super setAnchorPoint:anchorPoint];
+//    [super setAnchorPoint:anchorPoint];
     sprite_.anchorPoint = anchorPoint;
 }
 

@@ -55,7 +55,7 @@
 @property (nonatomic, readwrite, retain) CCSprite* sprite;
 @property (nonatomic, readonly) bool isActive;
 @property (nonatomic, readwrite) bool flipX;
-@property (nonatomic,readwrite) bool flipY;
+@property (nonatomic, readwrite) bool flipY;
 
 
 + (id)gridWithFile:(NSString*)fileName;
