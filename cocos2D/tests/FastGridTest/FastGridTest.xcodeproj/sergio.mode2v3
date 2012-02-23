@@ -216,7 +216,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>49534B31147B000A00551027</string>
+						<string>4953514E1480F1F200551027</string>
 						<key>history</key>
 						<array>
 							<string>495349D5147AB10400551027</string>
@@ -278,7 +278,7 @@
 			<array>
 				<dict>
 					<key>Proportion</key>
-					<string>446pt</string>
+					<string>444pt</string>
 					<key>Tabs</key>
 					<array>
 						<dict>
@@ -298,7 +298,7 @@
 								<dict>
 									<key>PBXSmartGroupTreeModuleColumnWidthsKey</key>
 									<array>
-										<real>323</real>
+										<real>321</real>
 										<real>20</real>
 										<real>43</real>
 										<real>43</real>
@@ -326,7 +326,7 @@
 										</array>
 									</array>
 									<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-									<string>{{0, 0}, {429, 333}}</string>
+									<string>{{0, 0}, {427, 306}}</string>
 								</dict>
 								<key>PBXTopSmartGroupGIDs</key>
 								<array/>
@@ -336,11 +336,11 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{10, 27}, {446, 351}}</string>
+								<string>{{10, 27}, {444, 324}}</string>
 								<key>GroupTreeTableConfiguration</key>
 								<array>
 									<string>MainColumn</string>
-									<real>323</real>
+									<real>321</real>
 									<string>FileBuiltColumn</string>
 									<real>20</real>
 									<string>ErrorsColumn</string>
@@ -349,7 +349,7 @@
 									<real>43</real>
 								</array>
 								<key>RubberWindowFrame</key>
-								<string>946 55 446 419 0 0 1440 878 </string>
+								<string>940 60 444 392 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXSmartGroupTreeModule</string>
@@ -534,12 +534,12 @@
 		<string>49534966147A759600551027</string>
 		<string>1C530D54069F1CE1000CFCEE</string>
 		<string>1C530D52069F1CE1000CFCEE</string>
-		<string>/Users/sergio/Documents/github/iOSSnippets/cocos2D/tests/FastGridTest/FastGridTest.xcodeproj</string>
 		<string>1C530D5B069F1CE1000CFCEE</string>
 		<string>49C998FD1459F55900BF7144</string>
+		<string>/Users/sergio/Documents/github/iOSSnippets/cocos2D/tests/FastGridTest/FastGridTest.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>946 55 446 419 0 0 1440 878 </string>
+	<string>940 60 444 392 0 0 1440 878 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
