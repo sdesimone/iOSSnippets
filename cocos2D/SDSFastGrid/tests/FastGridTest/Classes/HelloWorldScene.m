@@ -229,14 +229,25 @@ NSString* files[] = {
 
 CCLabelTTF *label = nil;
 
-#define numOfElements 1
+#define numOfElements 3
+
+/////////////////////////////////////////////////////////////////////////////////////////
+- (NSMutableDictionary*)spriteCache {
+    
+    static NSMutableDictionary* spriteCache_ = nil; 
+    if (!spriteCache_)
+        spriteCache_ = [[NSMutableDictionary dictionaryWithCapacity:numOfElements] retain];
+    
+    return spriteCache_;
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////
 - (CCNode*)nextSpriteFrom:(NSString**)array {
+    
     static short currentIndex = 0;
     if (currentIndex >= numOfElements)
         currentIndex = 0;
-    
+        
     CCNode* node = [self getChildByTag:1];
     if (!node) return nil;
     
@@ -244,11 +255,17 @@ CCLabelTTF *label = nil;
     [anima removeFromParentAndCleanup:YES];
     
     [label setString:array[currentIndex++]];
-//    anima = [SDSFastGrid gridWithFile:label.string];
-//    anima = [SDSFastGrid gridWithSpriteFrameName:label.string];
-    anima = [CCSprite spriteWithSpriteFrameName:label.string];
-    anima.position = ccp(512, 384);
-    anima.anchorPoint = ccp(1.0,1.0);
+    
+    anima = [[self spriteCache] objectForKey:label.string];
+    if (!anima) {
+        anima = [SDSFastGrid gridWithFile:label.string];
+        //anima = [SDSFastGrid gridWithSpriteFrameName:label.string];
+        //anima = [CCSprite spriteWithSpriteFrameName:label.string];
+        [[self spriteCache] setObject:anima forKey:label.string];
+    }
+    
+    CGSize size = [[CCDirector sharedDirector] winSize];
+    anima.position = ccp(size.width/2, size.height/2);
     
     NSLog(@"DRAWING %@", label.string);
     [node addChild:anima z:1 tag:1];
@@ -263,7 +280,7 @@ CCLabelTTF *label = nil;
     static bool ciccio = true;
     ciccio = !ciccio;
     
-    CCNode* node = [self nextSpriteFrom:frames];
+    CCNode* node = [self nextSpriteFrom:files];
     ccGridSize grid = (ciccio ? ccg(5, 4):ccg(5,4));
     ciccio = 0;
     
@@ -276,8 +293,8 @@ CCLabelTTF *label = nil;
                        [CCStopGrid action],
                        nil];
     
-    CCRotateBy* rotate = [CCRotateBy actionWithDuration:1.5 angle:90];
-    CCScaleBy* scale = [CCScaleBy actionWithDuration:1.5 scale:0.5];
+//    CCRotateBy* rotate = [CCRotateBy actionWithDuration:1.5 angle:90];
+//    CCScaleBy* scale = [CCScaleBy actionWithDuration:1.5 scale:0.5];
     
     [node runAction:effect];
 //    [node runAction:rotate];

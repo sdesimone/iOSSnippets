@@ -8,43 +8,11 @@
 
 #import "cocos2d.h"
 
+#define CC_RETINA_IPAD_DISPLAY_FILENAME_SUFFIX @"a"
+
 #ifdef CC_RETINA_IPAD_DISPLAY_FILENAME_SUFFIX
 
 @implementation CCFileUtils (SDSRetina)
-
-NSString *ccRemoveHDSuffixFromFile( NSString *path )
-{
-#if CC_IS_RETINA_DISPLAY_SUPPORTED
-    
-	if( CC_CONTENT_SCALE_FACTOR() == 2 ) {
-        
-		NSString *name = [path lastPathComponent];
-        
-		// check if path already has the suffix.
-		if( [name rangeOfString:CC_RETINA_DISPLAY_FILENAME_SUFFIX].location != NSNotFound ) {
-            
-			CCLOG(@"cocos2d: Filename(%@) contains %@ suffix. Removing it. See cocos2d issue #1040", path, CC_RETINA_DISPLAY_FILENAME_SUFFIX);
-            
-			NSString *newLastname = [name stringByReplacingOccurrencesOfString:CC_RETINA_DISPLAY_FILENAME_SUFFIX withString:@""];
-            
-			NSString *pathWithoutLastname = [path stringByDeletingLastPathComponent];
-			return [pathWithoutLastname stringByAppendingPathComponent:newLastname];
-		} else if( [name rangeOfString:CC_RETINA_IPAD_DISPLAY_FILENAME_SUFFIX].location != NSNotFound ) {
-            
-			CCLOG(@"cocos2d: Filename(%@) contains %@ suffix. Removing it. See cocos2d issue #1040", path, CC_RETINA_IPAD_DISPLAY_FILENAME_SUFFIX);
-            
-			NSString *newLastname = [name stringByReplacingOccurrencesOfString:CC_RETINA_IPAD_DISPLAY_FILENAME_SUFFIX withString:@""];
-            
-			NSString *pathWithoutLastname = [path stringByDeletingLastPathComponent];
-			return [pathWithoutLastname stringByAppendingPathComponent:newLastname];
-		}
-	}
-    
-#endif // CC_IS_RETINA_DISPLAY_SUPPORTED
-    
-	return path;
-    
-}
 
 +(NSString*) getDoubleResolutionImage:(NSString*)path
 {
@@ -70,11 +38,17 @@ NSString *ccRemoveHDSuffixFromFile( NSString *path )
 	return path;
 }
 
++ (NSFileManager*)localFileManager {
+    static NSFileManager *__localFileManager = nil;
+    
+    if (!__localFileManager)
+        __localFileManager = [[NSFileManager alloc] init];
+    return __localFileManager;
+}
+
 +(NSString*) getPathForSuffix:(NSString*)path suffix:(NSString*)suffix {
     NSString *pathWithoutExtension = [path stringByDeletingPathExtension];
     NSString *name = [pathWithoutExtension lastPathComponent];
-    
-    static NSFileManager *__localFileManager = [[NSFileManager alloc] init];
     
     // check if path already has the suffix.
     if( [name rangeOfString:suffix].location != NSNotFound ) {
@@ -98,7 +72,7 @@ NSString *ccRemoveHDSuffixFromFile( NSString *path )
     NSString *retinaName = [pathWithoutExtension stringByAppendingString:suffix];
     retinaName = [retinaName stringByAppendingPathExtension:extension];
     
-    if( [__localFileManager fileExistsAtPath:retinaName] )
+    if( [[self localFileManager] fileExistsAtPath:retinaName] )
         return retinaName;
     
     CCLOG(@"cocos2d: CCFileUtils: Warning HD file not found (%@): %@", suffix, [retinaName lastPathComponent] );
