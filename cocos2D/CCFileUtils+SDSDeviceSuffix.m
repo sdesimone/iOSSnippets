@@ -3,7 +3,7 @@
 //  MantraPhoneTest
 //
 //  Created by sergio on 3/19/12.
-//  Copyright 2012 Freescapes Labs. All rights reserved.
+//  Copyright 2012 Sergio De Simone, Freescapes Labs. All rights reserved.
 //
 
 #import "cocos2d.h"
@@ -49,7 +49,6 @@
         extension = [NSString stringWithFormat:@"%@.%@", [pathWithoutExtension pathExtension], extension];
         pathWithoutExtension = [pathWithoutExtension stringByDeletingPathExtension];
     }
-    
     
     NSString *retinaName = [pathWithoutExtension stringByAppendingString:suffix];
     retinaName = [retinaName stringByAppendingPathExtension:extension];
