@@ -134,9 +134,13 @@
 @end
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
 @implementation SDSFastGrid
 
 @synthesize sprite = sprite_;
+@synthesize fastGrid = fastGrid_;
 @dynamic isActive;
 @dynamic flipX;
 @dynamic flipY;
@@ -145,8 +149,13 @@
 +(id)gridWithFile:(NSString*)fileName {
     CCTexture2D* texture = [[CCTextureCache sharedTextureCache] addImage:fileName];
     if (texture)
-        return [[SDSFastGrid alloc] initWithTexture:texture];
+        return [[[SDSFastGrid alloc] initWithTexture:texture] autorelease];
     return nil;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
++ (id)gridWithTexture:(CCTexture2D*)texture {
+	return [[[self alloc] initWithTexture:texture] autorelease];
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -219,12 +228,14 @@
         CGSize size = [[CCDirector sharedDirector] winSizeInPixels];
         unsigned int POTWide = ccNextPOT(size.width);
         unsigned int POTHigh = ccNextPOT(size.height);
-
-        hscale_ = sprite_.contentSize.width/[SDSFastGrid maxDimension:sprite_.contentSize.width lessThanPOT:POTWide];
-        vscale_ = sprite_.contentSize.height/[SDSFastGrid maxDimension:sprite_.contentSize.height lessThanPOT:POTHigh];
-        vOffset_ = size.height - [SDSFastGrid maxDimension:sprite_.contentSize.height lessThanPOT:POTHigh];
         
+        hscale_ = sprite_.contentSizeInPixels.width/[SDSFastGrid maxDimension:sprite_.contentSizeInPixels.width lessThanPOT:POTWide];
+        vscale_ = sprite_.contentSizeInPixels.height/[SDSFastGrid maxDimension:sprite_.contentSizeInPixels.height lessThanPOT:POTHigh];
+        vOffset_ = size.height - [SDSFastGrid maxDimension:sprite_.contentSizeInPixels.height lessThanPOT:POTHigh];
+
         [self setContentSize:sprite_.textureRect.size];
+        NSLog(@"CREATING FAST SPRITE SIZED: %f, %f", sprite_.textureRect.size.width, sprite_.textureRect.size.height);
+
 	}
 	
 	return self;
@@ -240,6 +251,9 @@
 	[super dealloc];
 }
 
+         
+         
+         
 //////////////////////////////////////////////////////////////////////////////////////////////
 + (float)maxDimension:(float)x lessThanPOT:(float)max {
     if (x > max)
@@ -252,10 +266,10 @@
 - (void)draw {
     
     float radians = -CC_DEGREES_TO_RADIANS(rotation_);
-    float c = cosf(radians);
+/*    float c = cosf(radians);
     float s = sinf(radians);
     
-/*    CGAffineTransform matrix = CGAffineTransformMake(c * scaleX_,  s * scaleX_,
+    CGAffineTransform matrix = CGAffineTransformMake(c * scaleX_,  s * scaleX_,
                                                      -s * scaleY_, c * scaleY_,
                                                      0, 0);
     matrix = CGAffineTransformTranslate(matrix, -sprite_.anchorPointInPixels.x, -sprite_.anchorPointInPixels.y);	
@@ -356,8 +370,17 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setGrid:(CCGridBase*)grid
-{    
-	[grid setIsTextureFlipped:YES];
+{
+    //-- SDS: call to isTextureFlipped is a hack to force calling the grid's calculateVertexPoints method
+	[grid setIsTextureFlipped:![grid isTextureFlipped]];
+    
+    //-- SDS: this block from initWithTexture
+    //-- it seems to be necessary when the grid is autorotated to readjust the offset
+    //-- should be checked if this whole voffset_/scale_ matter could be refactored
+    CGSize size = [[CCDirector sharedDirector] winSizeInPixels];
+    unsigned int POTHigh = ccNextPOT(size.height);
+    vOffset_ = size.height - [SDSFastGrid maxDimension:sprite_.contentSizeInPixels.height lessThanPOT:POTHigh];
+
 	[fastGrid_ release];
 	fastGrid_ = [grid retain];
 	[fastGrid_ setTexture:texture_];

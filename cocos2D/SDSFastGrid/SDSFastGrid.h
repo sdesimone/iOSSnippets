@@ -53,12 +53,14 @@
 /** texture used */
 @property (nonatomic, readwrite, retain) CCTexture2D* texture;
 @property (nonatomic, readwrite, retain) CCSprite* sprite;
+@property (nonatomic, readonly) CCGridBase* fastGrid;
 @property (nonatomic, readonly) bool isActive;
 @property (nonatomic, readwrite) bool flipX;
 @property (nonatomic, readwrite) bool flipY;
 
 
 + (id)gridWithFile:(NSString*)fileName;
++ (id)gridWithTexture:(CCTexture2D*)texture;
 + (id)gridWithSpriteFrame:(CCSpriteFrame*)frame;
 + (id)gridWithSpriteFrameName:(NSString*)frameName;
 
