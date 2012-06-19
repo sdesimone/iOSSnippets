@@ -48,9 +48,9 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         if (![self getPath:imageName suffix:@"~ipad"]) {            
             if ((retinaName = [self getPath:imageName suffix:@"@2x"])) {
-                return [[UIImage alloc] initWithCGImage:[UIImage imageWithData:[NSData dataWithContentsOfFile:retinaName]].CGImage
+                return [[[UIImage alloc] initWithCGImage:[UIImage imageWithData:[NSData dataWithContentsOfFile:retinaName]].CGImage
                                                   scale:1.0
-                                            orientation:UIImageOrientationUp];
+                                            orientation:UIImageOrientationUp] autorelease];
             }
         }
     }
