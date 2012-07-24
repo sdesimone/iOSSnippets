@@ -42,27 +42,6 @@
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
-+ (NSMutableDictionary*)cache {
-    static NSMutableDictionary* sdscache_ = nil;
-    if (!sdscache_)
-        sdscache_ = [[NSMutableDictionary dictionaryWithCapacity:1] retain];
-    return sdscache_;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////
-+ (UIImage*)cachedImage:(NSString*)fileName {
-
-    UIImage* img = [[self cache] objectForKey:fileName];
-    if (!img) {
-        NSString* imgFile = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], fileName];
-        img = [UIImage imageWithContentsOfFile:imgFile];
-        if (img)
-            [[self cache] setObject:img forKey:imgFile];
-    }
-    return img;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////
 + (UIImage*)imageNamedSwizzled:(NSString*)imageName {
     NSString* retinaName = nil;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -75,8 +54,6 @@
         }
     }
     return [self imageNamedSwizzled:imageName];
-//    return [self cachedImage:imageName];
-    
 }
 
 @end
