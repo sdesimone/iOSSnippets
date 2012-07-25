@@ -7,7 +7,6 @@
  */
 
 #include "cpu_usage.h"
-
 #import <mach/mach.h>
 
 float cpu_usage()
@@ -22,7 +21,6 @@ float cpu_usage()
         return -1;
     }
     
-    task_basic_info_t      basic_info;
     thread_array_t         thread_list;
     mach_msg_type_number_t thread_count;
     
@@ -30,17 +28,11 @@ float cpu_usage()
     mach_msg_type_number_t thread_info_count;
     
     thread_basic_info_t basic_info_th;
-    uint32_t stat_thread = 0; // Mach threads
-    
-    //    basic_info = (task_basic_info_t)tinfo;
-    
-    // get threads in the task
+
     kr = task_threads(mach_task_self(), &thread_list, &thread_count);
     if (kr != KERN_SUCCESS) {
         return -1;
     }
-    //    if (thread_count > 0)
-    //        stat_thread += thread_count;
     
     long tot_sec = 0;
     long tot_usec = 0;
@@ -64,7 +56,7 @@ float cpu_usage()
             tot_cpu = tot_cpu + basic_info_th->cpu_usage / (float)TH_USAGE_SCALE * 100.0;
         }
         
-    } // for each thread
+    }
     
     return tot_cpu;
 }
